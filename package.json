@@ -1,0 +1,21 @@
+{
+  "name": "saral-backend",
+  "version": "1.0.0",
+  "description": "Backend server for Saral Disaster Response System using Socket.IO and Express",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "keywords": [
+    "disaster",
+    "ai",
+    "socket.io",
+    "gemini"
+  ],
+  "author": "Saral Team",
+  "license": "ISC"
+}
