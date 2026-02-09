@@ -1,0 +1,10 @@
+{
+    "buildCommand": "",
+    "outputDirectory": "public",
+    "rewrites": [
+        {
+            "source": "/citizen",
+            "destination": "/User_Interface.html"
+        }
+    ]
+}
