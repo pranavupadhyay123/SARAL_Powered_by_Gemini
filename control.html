@@ -233,18 +233,56 @@
 
         // --- CORE SETUP ---
         let socket;
+        const eventListeners = {};
+        
+        // Create a robust mock socket that uses localStorage for cross-tab communication
+        function createMockSocket() {
+            return {
+                emit: (type, data) => {
+                    console.log('[LocalBridge-Emit]', type, data);
+                    // Broadcast via localStorage for cross-tab sync
+                    localStorage.setItem('saral_event_bus', JSON.stringify({ type, ...data, timestamp: Date.now() }));
+                },
+                on: (type, fn) => {
+                    if (!eventListeners[type]) eventListeners[type] = [];
+                    eventListeners[type].push(fn);
+                }
+            };
+        }
+        
+        // Listen for localStorage events from other tabs
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'saral_event_bus' && event.newValue) {
+                try {
+                    const data = JSON.parse(event.newValue);
+                    const type = data.type;
+                    if (eventListeners[type]) {
+                        eventListeners[type].forEach(fn => fn(data));
+                    }
+                    // Also handle as incident
+                    handleIncident(data);
+                } catch(e) { console.error('Event parse error', e); }
+            }
+        });
+
         try {
             if (typeof io !== 'undefined') {
-                socket = io();
+                socket = io({ 
+                    timeout: 3000,
+                    reconnectionAttempts: 2
+                });
+                
+                // If connection fails, fall back to mock
+                socket.on('connect_error', () => {
+                    console.warn("Socket.IO connection failed, switching to LocalBridge mode");
+                    socket = createMockSocket();
+                });
             } else {
                 throw new Error("Socket.IO not loaded");
             }
         } catch (e) {
-            console.warn("Socket.IO not initialized (Offline Mode):", e);
-            socket = {
-                emit: (type, data) => console.log('[Mock-Emit]', type, data),
-                on: (type, fn) => console.log('[Mock-On] Registered:', type)
-            };
+            console.warn("Socket.IO not initialized (LocalBridge Mode):", e);
+            socket = createMockSocket();
         }
 
         // --- LOCAL BRIDGE LISTENER ---

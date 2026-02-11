@@ -29,9 +29,22 @@
     <!-- Markdown Parser for AI responses -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        .animate-blink { animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        
+        .animate-blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
         .scan-line {
             position: absolute;
             width: 100%;
@@ -40,7 +53,26 @@
             animation: scan 2s linear infinite;
             box-shadow: 0 0 10px #00ff00;
         }
-        @keyframes scan { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+        @keyframes scan {
+            0% {
+                top: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
 
         /* AI Gradient Text */
         .text-gradient-ai {
@@ -48,9 +80,15 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         /* Smooth Theme Transition */
-        body, div, nav, button, input, select, textarea {
+        body,
+        div,
+        nav,
+        button,
+        input,
+        select,
+        textarea {
             transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
 
@@ -68,8 +106,10 @@
             width: 90%;
             max-width: 400px;
         }
+
         .toast {
-            background: rgba(16, 185, 129, 0.95); /* Emerald */
+            background: rgba(16, 185, 129, 0.95);
+            /* Emerald */
             color: white;
             padding: 14px 20px;
             border-radius: 12px;
@@ -81,12 +121,23 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .toast i { font-size: 1.1rem; }
+
+        .toast i {
+            font-size: 1.1rem;
+        }
+
         @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
     </style>
 </head>
@@ -105,19 +156,22 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-wide md:hidden flex items-center gap-2">
-                        <span data-i18n="title">SARAL</span> <span class="text-[10px] bg-blue-600 px-1.5 py-0.5 rounded text-white font-normal">AI</span>
+                        <span data-i18n="title">SARAL</span> <span
+                            class="text-[10px] bg-blue-600 px-1.5 py-0.5 rounded text-white font-normal">AI</span>
                     </h1>
-                    <h1 class="text-xl font-bold tracking-wide hidden md:block" data-i18n="full_title">Saral: AI Disaster Response</h1>
+                    <h1 class="text-xl font-bold tracking-wide hidden md:block" data-i18n="full_title">Saral: AI
+                        Disaster Response</h1>
                 </div>
             </div>
             <div class="flex items-center gap-3 md:gap-4">
-                 <div class="hidden md:block text-right">
+                <div class="hidden md:block text-right">
                     <p class="text-[10px] text-gray-400 font-mono">ID</p>
                     <p class="text-xs font-mono text-blue-300" id="user-id-display">...</p>
                 </div>
-                
+
                 <!-- Language Selector -->
-                <select onchange="changeLanguage(this.value)" class="bg-white/10 text-white border-none text-xs rounded p-1 focus:ring-0 cursor-pointer hover:bg-white/20 transition">
+                <select onchange="changeLanguage(this.value)"
+                    class="bg-white/10 text-white border-none text-xs rounded p-1 focus:ring-0 cursor-pointer hover:bg-white/20 transition">
                     <option value="en">🇺🇸 EN</option>
                     <option value="hi">🇮🇳 HI</option>
                     <option value="es">🇪🇸 ES</option>
@@ -131,7 +185,8 @@
                     <i class="fas fa-cog text-xl"></i>
                 </button>
                 <!-- Theme Toggle -->
-                <button onclick="toggleTheme()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition focus:outline-none">
+                <button onclick="toggleTheme()"
+                    class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition focus:outline-none">
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
             </div>
@@ -139,7 +194,8 @@
     </nav>
 
     <!-- STATUS BANNER -->
-    <div class="bg-emerald-600 dark:bg-emerald-800 text-white p-2 text-center font-bold text-xs shadow-md tracking-wider">
+    <div
+        class="bg-emerald-600 dark:bg-emerald-800 text-white p-2 text-center font-bold text-xs shadow-md tracking-wider">
         <i class="fas fa-satellite"></i> <span data-i18n="status">SYSTEM ONLINE | GEMINI 3.0 CONNECTED</span>
     </div>
 
@@ -147,27 +203,33 @@
 
         <!-- CORE ACTIONS ROW -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
+
             <!-- LEFT: AI HAZARD EYE (CORE) -->
-            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden relative p-6 flex flex-col items-center text-center">
+            <div
+                class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden relative p-6 flex flex-col items-center text-center">
                 <div class="mb-4 bg-orange-100 dark:bg-orange-900/30 p-4 rounded-full text-orange-600">
                     <i class="fas fa-eye text-3xl"></i>
                 </div>
                 <h3 class="font-bold text-xl mb-1">Report Hazard</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Use AI to analyze structural damage or fire risks instantly.</p>
-                <button onclick="openHazardModal()" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Use AI to analyze structural damage or fire
+                    risks instantly.</p>
+                <button onclick="openHazardModal()"
+                    class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
                     <i class="fas fa-camera"></i> LAUNCH AI EYE
                 </button>
             </div>
 
             <!-- RIGHT: SOS (CORE) -->
-            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden relative p-6 flex flex-col items-center text-center">
+            <div
+                class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden relative p-6 flex flex-col items-center text-center">
                 <div class="mb-4 bg-red-100 dark:bg-red-900/30 p-4 rounded-full text-red-600 animate-pulse">
                     <i class="fas fa-broadcast-tower text-3xl"></i>
                 </div>
                 <h3 class="font-bold text-xl mb-1">Emergency SOS</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Broadcast high-priority distress signal to all nearby units.</p>
-                <button onclick="sendSOS()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Broadcast high-priority distress signal to all
+                    nearby units.</p>
+                <button onclick="sendSOS()"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
                     <i class="fas fa-exclamation-circle"></i> SEND SOS
                 </button>
             </div>
@@ -175,10 +237,13 @@
         </div>
 
         <!-- CENTER: MAP -->
-        <div class="bg-white dark:bg-gray-900 p-1 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 h-[450px] flex flex-col relative">
-            <div class="absolute top-4 left-4 z-[400] bg-white/90 dark:bg-black/80 backdrop-blur px-3 py-1.5 rounded-lg shadow border border-gray-200 dark:border-gray-700 flex items-center gap-2">
+        <div
+            class="bg-white dark:bg-gray-900 p-1 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 h-[450px] flex flex-col relative">
+            <div
+                class="absolute top-4 left-4 z-[400] bg-white/90 dark:bg-black/80 backdrop-blur px-3 py-1.5 rounded-lg shadow border border-gray-200 dark:border-gray-700 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                <span class="text-xs font-bold text-gray-700 dark:text-gray-300" data-i18n="live_tracking">Live Tracking</span>
+                <span class="text-xs font-bold text-gray-700 dark:text-gray-300" data-i18n="live_tracking">Live
+                    Tracking</span>
             </div>
             <div id="map" class="rounded-lg bg-gray-100 dark:bg-gray-800 flex-grow h-full w-full z-0"></div>
         </div>
@@ -186,7 +251,8 @@
         <!-- EXPLANATORY FOOTER -->
         <div class="text-center mt-2 px-6">
             <p class="text-[10px] text-gray-500 dark:text-gray-500 mb-1">
-                SARAL uses Gemini as a centralized incident intelligence engine that classifies, prioritizes, and guides response across all modules.
+                SARAL uses Gemini as a centralized incident intelligence engine that classifies, prioritizes, and guides
+                response across all modules.
             </p>
             <p class="text-[10px] text-gray-400 uppercase tracking-widest opacity-70">
                 <i class="fas fa-layer-group mr-1"></i> Advanced modules activate after incident classification.
@@ -198,35 +264,43 @@
     <!-- === MODALS === -->
 
     <!-- AI HAZARD EYE MODAL -->
-    <div id="hazard-modal" class="hidden fixed inset-0 z-[2000] bg-black/90 flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-lg bg-gray-900 rounded-2xl overflow-hidden border border-orange-500 shadow-2xl relative">
+    <div id="hazard-modal"
+        class="hidden fixed inset-0 z-[2000] bg-black/90 flex flex-col items-center justify-center p-4">
+        <div
+            class="w-full max-w-lg bg-gray-900 rounded-2xl overflow-hidden border border-orange-500 shadow-2xl relative">
             <div class="bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700">
                 <h2 class="text-orange-500 font-bold flex items-center gap-2">
                     <i class="fas fa-eye animate-pulse"></i> <span data-i18n="hazard_modal_title">✨ AI HAZARD EYE</span>
                 </h2>
-                <button onclick="closeHazardModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+                <button onclick="closeHazardModal()" class="text-gray-400 hover:text-white"><i
+                        class="fas fa-times"></i></button>
             </div>
             <div class="relative w-full aspect-video bg-black group">
-                <video id="hazard-video" class="w-full h-full object-cover opacity-80" autoplay muted playsinline></video>
+                <video id="hazard-video" class="w-full h-full object-cover opacity-80" autoplay muted
+                    playsinline></video>
                 <canvas id="hazard-canvas" class="hidden"></canvas>
-                
+
                 <div class="scan-line hidden" id="hazard-scan-line"></div>
-                <div id="hazard-analysis-box" class="hidden absolute bottom-4 left-4 right-4 bg-black/80 border-l-4 border-orange-500 p-3 rounded backdrop-blur-sm">
+                <div id="hazard-analysis-box"
+                    class="hidden absolute bottom-4 left-4 right-4 bg-black/80 border-l-4 border-orange-500 p-3 rounded backdrop-blur-sm">
                     <div class="text-orange-400 text-xs font-bold mb-1 uppercase tracking-wider flex justify-between">
                         <span>Gemini 3.0 Analysis</span>
                         <i class="fas fa-robot"></i>
                     </div>
                     <p class="text-white text-sm leading-tight mb-2" id="hazard-text">Analyzing...</p>
                     <div id="hazard-badge-container" class="hidden flex items-center">
-                        <span id="hazard-severity-badge" class="px-2 py-0.5 rounded text-[10px] font-bold text-white bg-gray-600 border border-white/20"></span>
+                        <span id="hazard-severity-badge"
+                            class="px-2 py-0.5 rounded text-[10px] font-bold text-white bg-gray-600 border border-white/20"></span>
                     </div>
                 </div>
             </div>
             <div class="p-4 bg-gray-800 flex gap-3">
-                <button onclick="analyzeHazard()" id="btn-hazard-scan" class="flex-1 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white py-3 rounded-lg font-bold text-sm shadow-lg flex items-center justify-center gap-2">
+                <button onclick="analyzeHazard()" id="btn-hazard-scan"
+                    class="flex-1 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white py-3 rounded-lg font-bold text-sm shadow-lg flex items-center justify-center gap-2">
                     <i class="fas fa-magic"></i> <span data-i18n="hazard_btn_scan">✨ AI ANALYZE</span>
                 </button>
-                <button onclick="sendHazardReport()" id="btn-hazard-send" class="hidden flex-1 bg-green-600 hover:bg-green-500 text-white py-3 rounded-lg font-bold text-sm shadow-lg flex items-center justify-center gap-2">
+                <button onclick="sendHazardReport()" id="btn-hazard-send"
+                    class="hidden flex-1 bg-green-600 hover:bg-green-500 text-white py-3 rounded-lg font-bold text-sm shadow-lg flex items-center justify-center gap-2">
                     <i class="fas fa-paper-plane"></i> <span data-i18n="hazard_btn_send">REPORT TO HQ</span>
                 </button>
             </div>
@@ -235,13 +309,17 @@
 
     <!-- AI HEALTH ASSISTANT MODAL (Accessible via code/hidden logic if needed, but keeping it clean) -->
     <!-- Note: Keeping structure for future dynamic enabling as per footer note -->
-    <div id="health-modal" class="hidden fixed inset-0 z-[2000] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div id="health-modal"
+        class="hidden fixed inset-0 z-[2000] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-gradient-to-r from-red-600 to-pink-600 p-4 text-white flex justify-between items-center">
-                <h2 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-user-md"></i> <span data-i18n="medic_modal_title">✨ AI Medic Assistant</span></h2>
-                <button onclick="closeHealthModal()" class="text-white/80 hover:text-white"><i class="fas fa-times"></i></button>
+                <h2 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-user-md"></i> <span
+                        data-i18n="medic_modal_title">✨ AI Medic Assistant</span></h2>
+                <button onclick="closeHealthModal()" class="text-white/80 hover:text-white"><i
+                        class="fas fa-times"></i></button>
             </div>
-            
+
             <div class="px-3 py-2 bg-blue-50/50 dark:bg-blue-900/10 border-b border-blue-100 dark:border-blue-800/50">
                 <p class="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
                     Gemini powers incident intelligence & prioritization. Other modules assist users locally.
@@ -249,18 +327,27 @@
             </div>
 
             <div class="flex border-b border-gray-200 dark:border-gray-700">
-                <button onclick="switchHealthTab('voice')" id="tab-voice" class="flex-1 py-3 text-xs font-bold text-red-600 border-b-2 border-red-600 bg-red-50 dark:bg-red-900/20"><i class="fas fa-microphone mr-1"></i> <span data-i18n="medic_tab_voice">VOICE TRIAGE</span></button>
-                <button onclick="switchHealthTab('cam')" id="tab-cam" class="flex-1 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"><i class="fas fa-camera mr-1"></i> <span data-i18n="medic_tab_cam">VISUAL SCAN</span></button>
+                <button onclick="switchHealthTab('voice')" id="tab-voice"
+                    class="flex-1 py-3 text-xs font-bold text-red-600 border-b-2 border-red-600 bg-red-50 dark:bg-red-900/20"><i
+                        class="fas fa-microphone mr-1"></i> <span data-i18n="medic_tab_voice">VOICE
+                        TRIAGE</span></button>
+                <button onclick="switchHealthTab('cam')" id="tab-cam"
+                    class="flex-1 py-3 text-xs font-bold text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"><i
+                        class="fas fa-camera mr-1"></i> <span data-i18n="medic_tab_cam">VISUAL SCAN</span></button>
             </div>
-            
+
             <!-- Voice Tab -->
             <div id="content-voice" class="p-6 flex flex-col items-center text-center space-y-6">
-                <div class="w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center relative">
+                <div
+                    class="w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center relative">
                     <i class="fas fa-microphone text-3xl text-red-500 dark:text-red-400" id="mic-icon"></i>
-                    <div class="absolute inset-0 border-4 border-red-200 dark:border-red-800 rounded-full animate-ping hidden" id="mic-ping"></div>
+                    <div class="absolute inset-0 border-4 border-red-200 dark:border-red-800 rounded-full animate-ping hidden"
+                        id="mic-ping"></div>
                 </div>
-                <div class="w-full bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700 min-h-[60px] text-sm text-gray-700 dark:text-gray-300 italic" id="voice-transcript">Tap mic to start...</div>
-                <button onclick="toggleVoiceHealth()" id="btn-voice-toggle" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold shadow-lg hover:bg-red-700 transition flex items-center justify-center gap-2">
+                <div class="w-full bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-700 min-h-[60px] text-sm text-gray-700 dark:text-gray-300 italic"
+                    id="voice-transcript">Tap mic to start...</div>
+                <button onclick="toggleVoiceHealth()" id="btn-voice-toggle"
+                    class="w-full bg-red-600 text-white py-3 rounded-xl font-bold shadow-lg hover:bg-red-700 transition flex items-center justify-center gap-2">
                     <i class="fas fa-microphone-alt"></i> <span data-i18n="medic_btn_listen">START LISTENING</span>
                 </button>
             </div>
@@ -269,7 +356,8 @@
             <div id="content-cam" class="hidden p-0 relative bg-black h-[300px]">
                 <video id="health-video" class="w-full h-full object-cover" autoplay playsinline></video>
                 <canvas id="health-canvas" class="hidden"></canvas>
-                <button onclick="analyzeHealthCam()" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white text-red-600 px-6 py-2 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
+                <button onclick="analyzeHealthCam()"
+                    class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white text-red-600 px-6 py-2 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
                     <i class="fas fa-magic"></i> <span data-i18n="medic_btn_analyze">✨ AI ANALYZE</span>
                 </button>
             </div>
@@ -277,25 +365,34 @@
             <div id="health-result" class="hidden bg-gray-900 text-white p-4 animate-slide-up border-t border-gray-700">
                 <div class="flex justify-between items-start mb-2">
                     <span class="text-[10px] uppercase tracking-wider text-blue-400">Gemini 3.0 Diagnosis</span>
-                    <span id="triage-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-600 text-white">ANALYZING</span>
+                    <span id="triage-badge"
+                        class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-600 text-white">ANALYZING</span>
                 </div>
                 <div id="health-diagnosis" class="text-sm font-medium mb-3 text-gray-200">Processing...</div>
-                <button onclick="submitHealthReport()" class="w-full bg-white text-gray-900 py-2 rounded font-bold text-sm hover:bg-gray-200" data-i18n="medic_btn_send">SEND REPORT TO HQ</button>
+                <button onclick="submitHealthReport()"
+                    class="w-full bg-white text-gray-900 py-2 rounded font-bold text-sm hover:bg-gray-200"
+                    data-i18n="medic_btn_send">SEND REPORT TO HQ</button>
             </div>
         </div>
     </div>
 
     <!-- SURVIVAL GUIDE MODAL (NEW) -->
-    <div id="survival-modal" class="hidden fixed inset-0 z-[2200] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-lg rounded-2xl shadow-2xl p-6 relative border border-gray-200 dark:border-gray-700">
-            <button onclick="document.getElementById('survival-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i class="fas fa-times text-xl"></i></button>
-            
+    <div id="survival-modal"
+        class="hidden fixed inset-0 z-[2200] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white dark:bg-gray-900 w-full max-w-lg rounded-2xl shadow-2xl p-6 relative border border-gray-200 dark:border-gray-700">
+            <button onclick="document.getElementById('survival-modal').classList.add('hidden')"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><i
+                    class="fas fa-times text-xl"></i></button>
+
             <h2 class="text-2xl font-bold mb-1 flex items-center gap-2 text-gray-800 dark:text-white">
-                <i class="fas fa-robot text-yellow-500"></i> <span data-i18n="survival_modal_title">AI Survival Guide</span>
+                <i class="fas fa-robot text-yellow-500"></i> <span data-i18n="survival_modal_title">AI Survival
+                    Guide</span>
             </h2>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Powered by Gemini 3.0 (Preview)</p>
-            
-            <div class="px-3 py-2 bg-blue-50/50 dark:bg-blue-900/10 border-b border-blue-100 dark:border-blue-800/50 mb-4 rounded">
+
+            <div
+                class="px-3 py-2 bg-blue-50/50 dark:bg-blue-900/10 border-b border-blue-100 dark:border-blue-800/50 mb-4 rounded">
                 <p class="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
                     Gemini powers incident intelligence & prioritization. Other modules assist users locally.
                 </p>
@@ -303,23 +400,28 @@
 
             <div class="flex gap-2 mb-4">
                 <div class="flex-grow relative">
-                     <input type="text" id="ai-prompt" placeholder="e.g., How to stop bleeding? or Flood safety" class="w-full p-3 pr-10 border border-gray-300 dark:border-gray-700 rounded-lg text-sm bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none">
-                     <button onclick="toggleSurvivalVoice()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600">
+                    <input type="text" id="ai-prompt" placeholder="e.g., How to stop bleeding? or Flood safety"
+                        class="w-full p-3 pr-10 border border-gray-300 dark:border-gray-700 rounded-lg text-sm bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <button onclick="toggleSurvivalVoice()"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600">
                         <i class="fas fa-microphone"></i>
-                     </button>
+                    </button>
                 </div>
-                <button onclick="askSurvivalAI()" class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700 transition">
+                <button onclick="askSurvivalAI()"
+                    class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700 transition">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-2 mb-2 flex justify-end">
-                 <button onclick="speakResponse()" class="text-xs font-bold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1">
+                <button onclick="speakResponse()"
+                    class="text-xs font-bold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1">
                     <i class="fas fa-volume-up"></i> <span data-i18n="survival_read_aloud">Read Aloud</span>
                 </button>
             </div>
 
-            <div id="ai-response-area" class="h-64 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-sm text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 custom-scroll">
+            <div id="ai-response-area"
+                class="h-64 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-sm text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 custom-scroll">
                 <div class="text-center text-gray-400 dark:text-gray-500 mt-10">
                     <i class="fas fa-sparkles mb-2"></i>
                     <p>Ask anything about disaster safety.</p>
@@ -330,136 +432,202 @@
 
 
     <!-- DAMAGE REPORT MODAL -->
-    <div id="damage-modal" class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
-            <h2 class="text-xl font-bold mb-4 text-orange-700 dark:text-orange-400"><i class="fas fa-exclamation-triangle"></i> <span data-i18n="damage_modal_title">Report Damage</span></h2>
+    <div id="damage-modal"
+        class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-orange-700 dark:text-orange-400"><i
+                    class="fas fa-exclamation-triangle"></i> <span data-i18n="damage_modal_title">Report Damage</span>
+            </h2>
             <form onsubmit="submitDamageReport(event)" class="space-y-3">
-                <select id="damage-type" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-800 dark:text-gray-200">
+                <select id="damage-type"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm font-bold text-gray-800 dark:text-gray-200">
                     <option value="Road Blocked">🚧 Road Blocked</option>
                     <option value="Building Collapse">🏚 Building Collapse</option>
                     <option value="Power Failure">⚡ Power Failure</option>
                     <option value="Flooding">🌊 Flooding</option>
                 </select>
-                <textarea id="damage-desc" placeholder="Describe the situation..." class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm h-20 text-gray-800 dark:text-gray-200"></textarea>
+                <textarea id="damage-desc" placeholder="Describe the situation..."
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm h-20 text-gray-800 dark:text-gray-200"></textarea>
                 <div class="flex gap-2">
-                    <button type="button" onclick="document.getElementById('damage-modal').classList.add('hidden')" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 rounded font-bold text-sm" data-i18n="damage_btn_cancel">Cancel</button>
-                    <button type="submit" class="flex-1 bg-orange-600 text-white py-2 rounded font-bold text-sm shadow" data-i18n="damage_btn_submit">Submit</button>
+                    <button type="button" onclick="document.getElementById('damage-modal').classList.add('hidden')"
+                        class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 rounded font-bold text-sm"
+                        data-i18n="damage_btn_cancel">Cancel</button>
+                    <button type="submit" class="flex-1 bg-orange-600 text-white py-2 rounded font-bold text-sm shadow"
+                        data-i18n="damage_btn_submit">Submit</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- LOST & FOUND MODAL -->
-    <div id="lost-modal" class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
+    <div id="lost-modal"
+        class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-purple-700 dark:text-purple-400"><i class="fas fa-search"></i> <span data-i18n="missing_modal_title">Lost & Found</span></h2>
+                <h2 class="text-xl font-bold text-purple-700 dark:text-purple-400"><i class="fas fa-search"></i> <span
+                        data-i18n="missing_modal_title">Lost & Found</span></h2>
                 <div class="flex bg-gray-100 dark:bg-gray-800 rounded p-1">
-                    <button onclick="toggleLostTab('person')" id="tab-person" class="px-3 py-1 rounded bg-purple-600 text-white text-xs font-bold transition" data-i18n="missing_tab_person">Person</button>
-                    <button onclick="toggleLostTab('item')" id="tab-item" class="px-3 py-1 rounded text-gray-500 dark:text-gray-400 text-xs font-bold transition hover:bg-gray-200 dark:hover:bg-gray-700" data-i18n="missing_tab_item">Item</button>
+                    <button onclick="toggleLostTab('person')" id="tab-person"
+                        class="px-3 py-1 rounded bg-purple-600 text-white text-xs font-bold transition"
+                        data-i18n="missing_tab_person">Person</button>
+                    <button onclick="toggleLostTab('item')" id="tab-item"
+                        class="px-3 py-1 rounded text-gray-500 dark:text-gray-400 text-xs font-bold transition hover:bg-gray-200 dark:hover:bg-gray-700"
+                        data-i18n="missing_tab_item">Item</button>
                 </div>
             </div>
             <!-- Missing Person Form -->
             <form id="form-person" onsubmit="submitLostReport(event, 'person')" class="space-y-3">
-                <input type="text" id="p-name" placeholder="Name of Person" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200" required>
+                <input type="text" id="p-name" placeholder="Name of Person"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200"
+                    required>
                 <div class="grid grid-cols-2 gap-2">
-                    <input type="number" id="p-age" placeholder="Age" class="p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200" required>
-                    <select id="p-gender" class="p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200">
+                    <input type="number" id="p-age" placeholder="Age"
+                        class="p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200"
+                        required>
+                    <select id="p-gender"
+                        class="p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200">
                         <option>Male</option>
                         <option>Female</option>
                         <option>Child</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Physical Description</label>
-                    <textarea id="p-desc" placeholder="Height, clothes, scars, etc." class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm h-16 text-gray-800 dark:text-gray-200"></textarea>
+                    <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Physical
+                        Description</label>
+                    <textarea id="p-desc" placeholder="Height, clothes, scars, etc."
+                        class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm h-16 text-gray-800 dark:text-gray-200"></textarea>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Upload Recent Photo</label>
-                    <input type="file" id="p-image" accept="image/*" class="w-full text-xs text-gray-500 dark:text-gray-400 file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-purple-50 dark:file:bg-purple-900/30 file:text-purple-700 dark:file:text-purple-300 hover:file:bg-purple-100 dark:hover:file:bg-purple-900/50">
+                    <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1">Upload Recent
+                        Photo</label>
+                    <input type="file" id="p-image" accept="image/*"
+                        class="w-full text-xs text-gray-500 dark:text-gray-400 file:mr-2 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-purple-50 dark:file:bg-purple-900/30 file:text-purple-700 dark:file:text-purple-300 hover:file:bg-purple-100 dark:hover:file:bg-purple-900/50">
                 </div>
-                <input type="tel" id="p-contact" placeholder="Your Contact Number" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200" required>
+                <input type="tel" id="p-contact" placeholder="Your Contact Number"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200"
+                    required>
                 <div class="flex gap-2">
-                    <button type="button" onclick="document.getElementById('lost-modal').classList.add('hidden')" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 rounded font-bold text-sm" data-i18n="damage_btn_cancel">Cancel</button>
-                    <button type="submit" class="flex-1 bg-purple-600 text-white py-2 rounded font-bold text-sm shadow" data-i18n="missing_btn_report">Report Missing</button>
+                    <button type="button" onclick="document.getElementById('lost-modal').classList.add('hidden')"
+                        class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 rounded font-bold text-sm"
+                        data-i18n="damage_btn_cancel">Cancel</button>
+                    <button type="submit" class="flex-1 bg-purple-600 text-white py-2 rounded font-bold text-sm shadow"
+                        data-i18n="missing_btn_report">Report Missing</button>
                 </div>
             </form>
             <!-- Lost Item Form -->
             <form id="form-item" onsubmit="submitLostReport(event, 'item')" class="hidden space-y-3">
-                <input type="text" id="i-desc" placeholder="Item Description" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200" required>
-                <input type="tel" id="i-contact" placeholder="Your Contact Number" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200" required>
+                <input type="text" id="i-desc" placeholder="Item Description"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200"
+                    required>
+                <input type="tel" id="i-contact" placeholder="Your Contact Number"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200"
+                    required>
                 <div class="flex gap-2">
-                    <button type="button" onclick="document.getElementById('lost-modal').classList.add('hidden')" class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 rounded font-bold text-sm" data-i18n="damage_btn_cancel">Cancel</button>
-                    <button type="submit" class="flex-1 bg-gray-700 text-white py-2 rounded font-bold text-sm shadow" data-i18n="missing_btn_report">Report Item</button>
+                    <button type="button" onclick="document.getElementById('lost-modal').classList.add('hidden')"
+                        class="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 py-2 rounded font-bold text-sm"
+                        data-i18n="damage_btn_cancel">Cancel</button>
+                    <button type="submit" class="flex-1 bg-gray-700 text-white py-2 rounded font-bold text-sm shadow"
+                        data-i18n="missing_btn_report">Report Item</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- VOLUNTEER MODAL -->
-    <div id="volunteer-modal" class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
+    <div id="volunteer-modal"
+        class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-teal-700 dark:text-teal-400"><i class="fas fa-hands-helping"></i> <span data-i18n="volunteer_modal_title">Community</span></h2>
+                <h2 class="text-xl font-bold text-teal-700 dark:text-teal-400"><i class="fas fa-hands-helping"></i>
+                    <span data-i18n="volunteer_modal_title">Community</span></h2>
                 <div class="flex bg-gray-100 dark:bg-gray-800 rounded p-1">
-                    <button onclick="toggleVolTab('request')" id="tab-request" class="px-3 py-1 rounded bg-teal-600 text-white text-xs font-bold transition" data-i18n="volunteer_tab_req">Request</button>
-                    <button onclick="toggleVolTab('join')" id="tab-join" class="px-3 py-1 rounded text-gray-500 dark:text-gray-400 text-xs font-bold transition hover:bg-gray-200 dark:hover:bg-gray-700" data-i18n="volunteer_tab_join">Join</button>
+                    <button onclick="toggleVolTab('request')" id="tab-request"
+                        class="px-3 py-1 rounded bg-teal-600 text-white text-xs font-bold transition"
+                        data-i18n="volunteer_tab_req">Request</button>
+                    <button onclick="toggleVolTab('join')" id="tab-join"
+                        class="px-3 py-1 rounded text-gray-500 dark:text-gray-400 text-xs font-bold transition hover:bg-gray-200 dark:hover:bg-gray-700"
+                        data-i18n="volunteer_tab_join">Join</button>
                 </div>
             </div>
             <!-- Request -->
             <form id="form-request" onsubmit="submitVolunteer(event, 'request')" class="space-y-3">
-                <select id="req-type" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200">
+                <select id="req-type"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200">
                     <option value="Food/Water">🍞 Need Food / Water</option>
                     <option value="Shelter">⛺ Need Shelter</option>
                     <option value="Medical">💊 Need Medical Supplies</option>
                 </select>
-                <input type="number" id="req-qty" placeholder="Quantity (e.g. 5)" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200" required>
-                <button type="submit" class="w-full bg-teal-600 text-white py-2 rounded font-bold text-sm shadow" data-i18n="volunteer_btn_post" title="Advanced Module">Post Request</button>
+                <input type="number" id="req-qty" placeholder="Quantity (e.g. 5)"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200"
+                    required>
+                <button type="submit" class="w-full bg-teal-600 text-white py-2 rounded font-bold text-sm shadow"
+                    data-i18n="volunteer_btn_post" title="Advanced Module">Post Request</button>
             </form>
             <!-- Join -->
             <form id="form-join" onsubmit="submitVolunteer(event, 'join')" class="hidden space-y-3">
-                <input type="text" id="vol-name" placeholder="Name" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200" required>
-                <select id="vol-skill" class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200">
+                <input type="text" id="vol-name" placeholder="Name"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200"
+                    required>
+                <select id="vol-skill"
+                    class="w-full p-2 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-800 dark:text-gray-200">
                     <option value="General">General Help</option>
                     <option value="Medic">Medical</option>
                     <option value="Driver">Driver</option>
                 </select>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-bold text-sm shadow" data-i18n="volunteer_btn_register" title="Advanced Module">Register</button>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded font-bold text-sm shadow"
+                    data-i18n="volunteer_btn_register" title="Advanced Module">Register</button>
             </form>
-            <button onclick="document.getElementById('volunteer-modal').classList.add('hidden')" class="mt-4 text-xs text-gray-500 dark:text-gray-400 underline w-full" data-i18n="close">Close</button>
+            <button onclick="document.getElementById('volunteer-modal').classList.add('hidden')"
+                class="mt-4 text-xs text-gray-500 dark:text-gray-400 underline w-full" data-i18n="close">Close</button>
         </div>
     </div>
 
     <!-- CHECKLIST MODAL -->
-    <div id="checklist-modal" class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
-            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white" data-i18n="checklist_modal_title">🎒 Preparedness Checklist</h2>
+    <div id="checklist-modal"
+        class="hidden fixed inset-0 z-[1500] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white dark:bg-gray-900 w-full max-w-sm rounded-xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-bold mb-4 text-gray-800 dark:text-white" data-i18n="checklist_modal_title">🎒
+                Preparedness Checklist</h2>
             <div class="space-y-3 mb-6">
                 <label class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded cursor-pointer">
-                    <input type="checkbox" class="w-5 h-5 accent-blue-600"> <span class="text-sm text-gray-700 dark:text-gray-300" data-i18n="check_gobag">Pack Go-Bag</span>
+                    <input type="checkbox" class="w-5 h-5 accent-blue-600"> <span
+                        class="text-sm text-gray-700 dark:text-gray-300" data-i18n="check_gobag">Pack Go-Bag</span>
                 </label>
                 <label class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded cursor-pointer">
-                    <input type="checkbox" class="w-5 h-5 accent-blue-600"> <span class="text-sm text-gray-700 dark:text-gray-300" data-i18n="check_contacts">Emergency Contacts</span>
+                    <input type="checkbox" class="w-5 h-5 accent-blue-600"> <span
+                        class="text-sm text-gray-700 dark:text-gray-300" data-i18n="check_contacts">Emergency
+                        Contacts</span>
                 </label>
                 <label class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded cursor-pointer">
-                    <input type="checkbox" class="w-5 h-5 accent-blue-600"> <span class="text-sm text-gray-700 dark:text-gray-300" data-i18n="check_maps">Download Offline Maps</span>
+                    <input type="checkbox" class="w-5 h-5 accent-blue-600"> <span
+                        class="text-sm text-gray-700 dark:text-gray-300" data-i18n="check_maps">Download Offline
+                        Maps</span>
                 </label>
             </div>
-            <button onclick="document.getElementById('checklist-modal').classList.add('hidden')" class="w-full bg-gray-800 dark:bg-gray-700 text-white py-3 rounded-lg font-bold" data-i18n="close">Close</button>
+            <button onclick="document.getElementById('checklist-modal').classList.add('hidden')"
+                class="w-full bg-gray-800 dark:bg-gray-700 text-white py-3 rounded-lg font-bold"
+                data-i18n="close">Close</button>
         </div>
     </div>
 
     <!-- SCANNER MODAL -->
-    <div id="scanner-modal" class="hidden fixed inset-0 z-[1600] bg-black/80 flex items-center justify-center p-4 backdrop-blur-md">
-        <div class="bg-gray-900 w-full max-w-lg rounded-xl p-4 shadow-2xl border border-pink-500 relative flex flex-col items-center">
-            <button onclick="closeScannerModal()" class="absolute top-2 right-2 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+    <div id="scanner-modal"
+        class="hidden fixed inset-0 z-[1600] bg-black/80 flex items-center justify-center p-4 backdrop-blur-md">
+        <div
+            class="bg-gray-900 w-full max-w-lg rounded-xl p-4 shadow-2xl border border-pink-500 relative flex flex-col items-center">
+            <button onclick="closeScannerModal()" class="absolute top-2 right-2 text-gray-400 hover:text-white"><i
+                    class="fas fa-times text-xl"></i></button>
             <h2 class="text-xl font-bold text-pink-500 mb-2 flex items-center gap-2">
                 <i class="fas fa-expand"></i> <span data-i18n="scanner_modal_title">Gemini 3.0 Person Finder</span>
             </h2>
-            
+
             <!-- Description Input -->
             <div class="w-full mb-3">
-                <input type="text" id="scan-target" placeholder="Describe person (e.g., Boy in red shirt, age 10)" 
+                <input type="text" id="scan-target" placeholder="Describe person (e.g., Boy in red shirt, age 10)"
                     class="w-full bg-gray-800 text-white border border-gray-600 rounded p-2 text-sm focus:border-pink-500 outline-none">
             </div>
 
@@ -469,18 +637,28 @@
                 <!-- Hidden Canvas for Snapshot -->
                 <canvas id="snapshot-canvas" class="hidden"></canvas>
 
-                <div id="scan-status" class="absolute bottom-2 left-2 px-2 py-1 bg-black/60 text-white text-[10px] rounded font-mono">Initializing...</div>
+                <div id="scan-status"
+                    class="absolute bottom-2 left-2 px-2 py-1 bg-black/60 text-white text-[10px] rounded font-mono">
+                    Initializing...</div>
             </div>
-            
+
             <div class="mt-4 flex gap-3 w-full">
-                <button onclick="toggleScanner(true)" id="btn-start-scan" class="flex-1 bg-pink-600 hover:bg-pink-500 text-white py-2 rounded font-bold text-sm" data-i18n="scanner_btn_start">Start AI Scan</button>
-                <button onclick="toggleScanner(false)" id="btn-stop-scan" class="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-300 py-2 rounded font-bold text-sm hidden" data-i18n="scanner_btn_stop">Stop</button>
-                <button onclick="flipCamera()" id="btn-flip-cam" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded font-bold text-sm"><i class="fas fa-sync-alt"></i></button>
+                <button onclick="toggleScanner(true)" id="btn-start-scan"
+                    class="flex-1 bg-pink-600 hover:bg-pink-500 text-white py-2 rounded font-bold text-sm"
+                    data-i18n="scanner_btn_start">Start AI Scan</button>
+                <button onclick="toggleScanner(false)" id="btn-stop-scan"
+                    class="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-300 py-2 rounded font-bold text-sm hidden"
+                    data-i18n="scanner_btn_stop">Stop</button>
+                <button onclick="flipCamera()" id="btn-flip-cam"
+                    class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded font-bold text-sm"><i
+                        class="fas fa-sync-alt"></i></button>
             </div>
-            <div id="scan-result" class="hidden mt-3 w-full bg-green-900/30 border border-green-500 p-3 rounded flex flex-col gap-2 animate-fade-in">
+            <div id="scan-result"
+                class="hidden mt-3 w-full bg-green-900/30 border border-green-500 p-3 rounded flex flex-col gap-2 animate-fade-in">
                 <div class="flex items-center justify-between">
                     <div class="text-green-400 font-bold text-sm"><i class="fas fa-check-circle"></i> MATCH FOUND!</div>
-                    <button onclick="notifyMatch()" class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">NOTIFY HQ</button>
+                    <button onclick="notifyMatch()"
+                        class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">NOTIFY HQ</button>
                 </div>
                 <div id="match-desc" class="text-white text-xs leading-tight">AI Description...</div>
             </div>
@@ -523,16 +701,16 @@
             });
             // Update placeholders manually
             let p1 = "e.g., How to stop bleeding?", p2 = "Describe person...";
-            if(lang==='hi') { p1="जैसे: खून बहना कैसे रोकें?"; p2="व्यक्ति का वर्णन करें..."; }
-            else if(lang==='es') { p1="ej., ¿Cómo detener sangrado?"; p2="Describir persona..."; }
-            else if(lang==='ko') { p1="예: 지혈 방법?"; p2="사람 설명..."; }
-            else if(lang==='ja') { p1="例: 出血を止めるには？"; p2="人物の特徴..."; }
-            else if(lang==='zh') { p1="例如：如何止血？"; p2="描述人员..."; }
-            
+            if (lang === 'hi') { p1 = "जैसे: खून बहना कैसे रोकें?"; p2 = "व्यक्ति का वर्णन करें..."; }
+            else if (lang === 'es') { p1 = "ej., ¿Cómo detener sangrado?"; p2 = "Describir persona..."; }
+            else if (lang === 'ko') { p1 = "예: 지혈 방법?"; p2 = "사람 설명..."; }
+            else if (lang === 'ja') { p1 = "例: 出血を止めるには？"; p2 = "人物の特徴..."; }
+            else if (lang === 'zh') { p1 = "例如：如何止血？"; p2 = "描述人员..."; }
+
             const promptEl = document.getElementById('ai-prompt');
-            if(promptEl) promptEl.placeholder = p1;
+            if (promptEl) promptEl.placeholder = p1;
             const scanTarget = document.getElementById('scan-target');
-            if(scanTarget) scanTarget.placeholder = p2;
+            if (scanTarget) scanTarget.placeholder = p2;
         }
 
         function toggleTheme() {
@@ -560,7 +738,7 @@
             toast.className = "toast";
             toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
             container.appendChild(toast);
-            
+
             // Remove after 3 seconds
             setTimeout(() => {
                 toast.style.transition = "opacity 0.5s, transform 0.5s";
@@ -604,26 +782,70 @@
 
         // --- GLOBAL VARS ---
         let hazardStream;
-        let currentHazardImage = null; 
+        let currentHazardImage = null;
         let map, userMarker = null;
-        let lastLocation = null; 
+        let lastLocation = null;
         const startLoc = [28.6139, 77.2090];
-        
+
         // --- CORE SETUP ---
         let socket;
-        try {
-            if (typeof io !== 'undefined') socket = io();
-            else throw new Error("Socket.IO not loaded");
-        } catch (e) {
-            console.warn("Offline Mode");
-            socket = { emit: (t, d) => console.log('[Mock-Emit]', t, d), on: (t, f) => console.log('[Mock-On]', t) };
+        const eventListeners = {};
+
+        // Create a robust mock socket that uses localStorage for cross-tab communication
+        function createMockSocket() {
+            return {
+                emit: (type, data) => {
+                    console.log('[LocalBridge-Emit]', type, data);
+                },
+                on: (type, fn) => {
+                    if (!eventListeners[type]) eventListeners[type] = [];
+                    eventListeners[type].push(fn);
+                }
+            };
         }
-        const channel = { 
+
+        // Listen for events from Command Center (admin broadcasts)
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'saral_event_bus' && event.newValue) {
+                try {
+                    const data = JSON.parse(event.newValue);
+                    const type = data.type;
+                    if (eventListeners[type]) {
+                        eventListeners[type].forEach(fn => fn(data));
+                    }
+                    // Handle disaster alerts
+                    if (type === 'DISASTER_ALERT') {
+                        alert('⚠️ DISASTER ALERT: ' + (data.alertType || data.details));
+                    }
+                } catch (e) { console.error('Event parse error', e); }
+            }
+        });
+
+        try {
+            if (typeof io !== 'undefined') {
+                socket = io({
+                    timeout: 3000,
+                    reconnectionAttempts: 2
+                });
+
+                // If connection fails, fall back to mock
+                socket.on('connect_error', () => {
+                    console.warn("Socket.IO connection failed, switching to LocalBridge mode");
+                    socket = createMockSocket();
+                });
+            } else {
+                throw new Error("Socket.IO not loaded");
+            }
+        } catch (e) {
+            console.warn("LocalBridge Mode Active");
+            socket = createMockSocket();
+        }
+        const channel = {
             postMessage: (data) => {
                 const payload = { ...data, timestamp: Date.now() };
                 localStorage.setItem('saral_event_bus', JSON.stringify(payload));
                 if (socket && socket.emit) socket.emit(data.type, data);
-            } 
+            }
         };
         const USER_ID = 'CITIZEN-' + Math.floor(Math.random() * 10000);
         document.getElementById('user-id-display').innerText = USER_ID;
@@ -632,26 +854,26 @@
         window.addEventListener('load', () => {
             map = L.map('map').setView(startLoc, 13);
             // NEW (FIXED)
-L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{ 
-    maxZoom: 20, 
-    attribution: 'Google Satellite'
-}).addTo(map);
+            L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                attribution: 'Google Satellite'
+            }).addTo(map);
 
-// Added this line to fix gray box issues on mobile resize
-setTimeout(() => { map.invalidateSize(); }, 500);
+            // Added this line to fix gray box issues on mobile resize
+            setTimeout(() => { map.invalidateSize(); }, 500);
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition(pos => {
                     const lat = pos.coords.latitude;
                     const lng = pos.coords.longitude;
                     const newLoc = [lat, lng];
-                    
+
                     lastLocation = { lat, lng };
 
                     if (!userMarker) {
                         userMarker = L.marker(newLoc).addTo(map).bindPopup("You are here").openPopup();
                         map.setView(newLoc, 16);
                     } else userMarker.setLatLng(newLoc);
-                    
+
                     channel.postMessage({ type: 'LOCATION_UPDATE', userId: USER_ID, location: `${lat}, ${lng}`, time: new Date().toLocaleTimeString() });
                 });
             }
@@ -673,7 +895,7 @@ setTimeout(() => { map.invalidateSize(); }, 500);
         function toggleLostTab(tab) {
             const tabPerson = document.getElementById('tab-person');
             const tabItem = document.getElementById('tab-item');
-            
+
             if (tab === 'person') {
                 document.getElementById('form-person').classList.remove('hidden');
                 document.getElementById('form-item').classList.add('hidden');
@@ -686,7 +908,7 @@ setTimeout(() => { map.invalidateSize(); }, 500);
                 tabPerson.className = "px-3 py-1 rounded text-gray-500 dark:text-gray-400 text-xs font-bold transition hover:bg-gray-200 dark:hover:bg-gray-700";
             }
         }
-        
+
         function submitLostReport(e, cat) {
             e.preventDefault();
             const loc = lastLocation ? `${lastLocation.lat}, ${lastLocation.lng}` : "Unknown";
@@ -696,7 +918,7 @@ setTimeout(() => { map.invalidateSize(); }, 500);
                 const fileInput = document.getElementById('p-image');
                 if (fileInput.files && fileInput.files[0]) {
                     const reader = new FileReader();
-                    reader.onload = function(evt) {
+                    reader.onload = function (evt) {
                         const base64Img = evt.target.result;
                         const missingPersonData = {
                             name: document.getElementById('p-name').value,
@@ -709,33 +931,33 @@ setTimeout(() => { map.invalidateSize(); }, 500);
                         localStorage.setItem('saral_missing_list', JSON.stringify(missingList));
 
                         const details = `Missing: ${missingPersonData.name} (${document.getElementById('p-age').value}). Desc: ${missingPersonData.desc}`;
-                        channel.postMessage({ 
-                            type: 'MISSING_PERSON', 
-                            userId: USER_ID, 
-                            details: details, 
-                            image: base64Img, 
-                            location: loc, 
-                            time: new Date().toLocaleTimeString() 
+                        channel.postMessage({
+                            type: 'MISSING_PERSON',
+                            userId: USER_ID,
+                            details: details,
+                            image: base64Img,
+                            location: loc,
+                            time: new Date().toLocaleTimeString()
                         });
                         alert("Missing Person Reported (With Photo)!");
                         document.getElementById('lost-modal').classList.add('hidden');
                         e.target.reset();
                     };
                     reader.readAsDataURL(fileInput.files[0]);
-                    return; 
+                    return;
                 }
             }
 
-            let details = cat === 'person' 
-                ? `Missing: ${document.getElementById('p-name').value} (${document.getElementById('p-age').value})` 
+            let details = cat === 'person'
+                ? `Missing: ${document.getElementById('p-name').value} (${document.getElementById('p-age').value})`
                 : `Lost Item: ${document.getElementById('i-desc').value}`;
-            
-            channel.postMessage({ 
-                type: cat === 'person' ? 'MISSING_PERSON' : 'LOST_ITEM', 
-                userId: USER_ID, 
-                details: details, 
-                location: loc, 
-                time: new Date().toLocaleTimeString() 
+
+            channel.postMessage({
+                type: cat === 'person' ? 'MISSING_PERSON' : 'LOST_ITEM',
+                userId: USER_ID,
+                details: details,
+                location: loc,
+                time: new Date().toLocaleTimeString()
             });
             alert("Report Submitted!");
             document.getElementById('lost-modal').classList.add('hidden');
@@ -744,9 +966,9 @@ setTimeout(() => { map.invalidateSize(); }, 500);
 
         // --- RESTORED LOGIC: VOLUNTEER ---
         function toggleVolTab(tab) {
-             const tabReq = document.getElementById('tab-request');
-             const tabJoin = document.getElementById('tab-join');
-            if(tab === 'request') {
+            const tabReq = document.getElementById('tab-request');
+            const tabJoin = document.getElementById('tab-join');
+            if (tab === 'request') {
                 document.getElementById('form-request').classList.remove('hidden');
                 document.getElementById('form-join').classList.add('hidden');
                 tabReq.className = "px-3 py-1 rounded bg-teal-600 text-white text-xs font-bold transition";
@@ -779,25 +1001,25 @@ setTimeout(() => { map.invalidateSize(); }, 500);
         // --- AI LOGIC (UPDATED WITH GEMINI) ---
         async function openHazardModal() {
             document.getElementById('hazard-modal').classList.remove('hidden');
-            try { hazardStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); document.getElementById('hazard-video').srcObject = hazardStream; } catch(e) { alert("Cam Error"); }
+            try { hazardStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); document.getElementById('hazard-video').srcObject = hazardStream; } catch (e) { alert("Cam Error"); }
         }
-        function closeHazardModal() { document.getElementById('hazard-modal').classList.add('hidden'); if(hazardStream) hazardStream.getTracks().forEach(t=>t.stop()); document.getElementById('hazard-analysis-box').classList.add('hidden'); document.getElementById('btn-hazard-scan').classList.remove('hidden'); document.getElementById('btn-hazard-send').classList.add('hidden'); }
-        
+        function closeHazardModal() { document.getElementById('hazard-modal').classList.add('hidden'); if (hazardStream) hazardStream.getTracks().forEach(t => t.stop()); document.getElementById('hazard-analysis-box').classList.add('hidden'); document.getElementById('btn-hazard-scan').classList.remove('hidden'); document.getElementById('btn-hazard-send').classList.add('hidden'); }
+
         async function analyzeHazard() {
             document.getElementById('hazard-scan-line').classList.remove('hidden');
             document.getElementById('btn-hazard-scan').innerText = "ANALYZING...";
-            
+
             const video = document.getElementById('hazard-video');
             const canvas = document.getElementById('hazard-canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
-            
+
             currentHazardImage = canvas.toDataURL('image/jpeg', 0.8);
 
             const prompt = "Analyze this image for disaster hazards. Identify the main hazard and estimate severity (CRITICAL, MODERATE, MINOR). Format: 'Hazard: [Description] | Severity: [Level]'";
             const resultText = await callGemini(prompt, currentHazardImage);
-            
+
             // Parse Result
             let displayText = resultText;
             let severity = null;
@@ -810,18 +1032,18 @@ setTimeout(() => { map.invalidateSize(); }, 500);
                 else if (sevPart.includes("MODERATE")) severity = "MODERATE";
                 else if (sevPart.includes("MINOR")) severity = "MINOR";
             }
-            
+
             document.getElementById('hazard-scan-line').classList.add('hidden');
             document.getElementById('hazard-analysis-box').classList.remove('hidden');
             document.getElementById('hazard-text').innerText = displayText;
 
             const badge = document.getElementById('hazard-severity-badge');
             const badgeContainer = document.getElementById('hazard-badge-container');
-            
+
             if (severity) {
                 badgeContainer.classList.remove('hidden');
                 badge.innerText = "SEVERITY: " + severity;
-                badge.className = "px-2 py-0.5 rounded text-[10px] font-bold text-white border border-white/20 " + 
+                badge.className = "px-2 py-0.5 rounded text-[10px] font-bold text-white border border-white/20 " +
                     (severity === "CRITICAL" ? "bg-red-600 animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.7)]" : (severity === "MODERATE" ? "bg-yellow-600" : "bg-green-600"));
             } else {
                 badgeContainer.classList.add('hidden');
@@ -831,7 +1053,7 @@ setTimeout(() => { map.invalidateSize(); }, 500);
             document.getElementById('btn-hazard-send').classList.remove('hidden');
         }
 
-        function sendHazardReport() { 
+        function sendHazardReport() {
             let details = document.getElementById('hazard-text').innerText;
             const badge = document.getElementById('hazard-severity-badge');
             if (!badge.parentElement.classList.contains('hidden')) {
@@ -839,24 +1061,24 @@ setTimeout(() => { map.invalidateSize(); }, 500);
             }
             const loc = lastLocation ? `${lastLocation.lat}, ${lastLocation.lng}` : "Unknown";
 
-            channel.postMessage({ 
-                type: 'HAZARD_REPORT', 
-                userId: USER_ID, 
-                details: details, 
+            channel.postMessage({
+                type: 'HAZARD_REPORT',
+                userId: USER_ID,
+                details: details,
                 isAiGenerated: true,
-                image: currentHazardImage, 
-                location: loc, 
-                time: new Date().toLocaleTimeString() 
-            }); 
+                image: currentHazardImage,
+                location: loc,
+                time: new Date().toLocaleTimeString()
+            });
             // FIX: Specific Toast Message
-            showToast("🧠 Gemini intelligence transmitted to Command Center"); 
-            closeHazardModal(); 
+            showToast("🧠 Gemini intelligence transmitted to Command Center");
+            closeHazardModal();
         }
 
         // --- SOS ---
         async function sendSOS() {
             const loc = lastLocation ? `${lastLocation.lat}, ${lastLocation.lng}` : "Unknown";
-            
+
             // UI Feedback for recording
             showToast("🎙️ Recording 3s Audio Clip...");
 
@@ -866,7 +1088,7 @@ setTimeout(() => { map.invalidateSize(); }, 500);
                 let chunks = [];
 
                 recorder.ondataavailable = e => chunks.push(e.data);
-                
+
                 recorder.onstop = async () => {
                     const blob = new Blob(chunks, { type: 'audio/webm' });
                     // Convert to Base64
@@ -874,17 +1096,17 @@ setTimeout(() => { map.invalidateSize(); }, 500);
                     reader.readAsDataURL(blob);
                     reader.onloadend = () => {
                         const base64Audio = reader.result;
-                        
-                        channel.postMessage({ 
-                            type: 'SOS', 
-                            userId: USER_ID, 
-                            details: "PANIC BUTTON", 
-                            location: loc, 
+
+                        channel.postMessage({
+                            type: 'SOS',
+                            userId: USER_ID,
+                            details: "PANIC BUTTON",
+                            location: loc,
                             audio: base64Audio,
-                            time: new Date().toLocaleTimeString() 
-                        }); 
+                            time: new Date().toLocaleTimeString()
+                        });
                         showToast("🆘 Distress Signal Broadcasted with Audio!");
-                        
+
                         // Stop all tracks
                         stream.getTracks().forEach(track => track.stop());
                     };
@@ -898,10 +1120,11 @@ setTimeout(() => { map.invalidateSize(); }, 500);
             } catch (err) {
                 console.error("Audio recording failed", err);
                 // Fallback sending without audio
-                channel.postMessage({ type: 'SOS', userId: USER_ID, details: "PANIC BUTTON (Audio Failed)", location: loc, time: new Date().toLocaleTimeString() }); 
-                showToast("🆘 Distress Signal Broadcasted (No Audio)!"); 
+                channel.postMessage({ type: 'SOS', userId: USER_ID, details: "PANIC BUTTON (Audio Failed)", location: loc, time: new Date().toLocaleTimeString() });
+                showToast("🆘 Distress Signal Broadcasted (No Audio)!");
             }
         }
     </script>
 </body>
+
 </html>
